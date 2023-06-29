@@ -115,15 +115,14 @@ async function updateuser(req, res) {
         if (userId) {
             const body = req.body;
             userSchema.updateOne({ _id: userId }, body, function (err, data) {
-                if (err) res.status(500).send({ error: "Internal Server Error" });
-                console.log(data);
+                if (err) throw err;
+
                 return res.status(201).send({ msg: "Record Updated...!" });
             })
 
         } else {
             return res.status(401).send({ error: "User Not Found...!" });
         }
-
     } catch (error) {
         return res.status(500).send({ error: "Internal Server Error" });
     }
