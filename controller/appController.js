@@ -36,7 +36,7 @@ async function getUser(req, res) {
 }
 async function generateOTP(req, res) {
     req.app.locals.OTP = await optGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false })
-    return res.status(200).send({ code: req.app.locals.OTP })
+    return res.status(201).send({ code: req.app.locals.OTP })
 }
 async function verifyOTP(req, res) {
     const { code } = req.query
@@ -114,10 +114,16 @@ async function updateuser(req, res) {
         const { userId } = req.user
         if (userId) {
             const body = req.body;
-            await userSchema.updateOne({ _id: userId }, body);
-            return res.status(201).send({ msg: "Record Updated...!" });
+            userSchema.updateOne({ _id: userId }, body, function (err, data) {
+                if (err) res.status(500).send({ error: "Internal Server Error" });
+                console.log(data);
+                return res.status(201).send({ msg: "Record Updated...!" });
+            })
+
+        } else {
+            return res.status(401).send({ error: "User Not Found...!" });
         }
-        return res.status(404).send({ error: "ID not found" });
+
     } catch (error) {
         return res.status(500).send({ error: "Internal Server Error" });
     }

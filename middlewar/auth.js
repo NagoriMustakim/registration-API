@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
 async function Auth(req, res, next) {
-
     try {
         // access authorize header to validate request
         const token = req.headers.authorization.split(" ")[1]
@@ -13,13 +12,4 @@ async function Auth(req, res, next) {
     }
 }
 
-function localVeriable(req, res, next) {
-    req.app.locals = {
-        OTP: null,
-        resetSession: false
-    }
-    next()
-}
-
 module.exports = Auth
-module.exports = localVeriable
