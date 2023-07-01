@@ -3,13 +3,15 @@ const cors = require('cors')
 const morgan = require('morgan')
 require('dotenv').config()
 const router = require('./router/route')
+const itemrouter = require('./router/items.route')
 const connection = require('./database/connection')
 const app = express()
 const port = process.env.PORT || 4000
 
 app.use(express.json())
-app.use(cors()) 
+app.use(cors())
 app.use('/api/v1', router)
+app.use('/api/v1/item', itemrouter)
 app.use(morgan('tiny'));
 app.disable('x-powered-by')
 

@@ -59,13 +59,14 @@ async function createResetSession(req, res) {
 
 async function register(req, res) {
     try {
-        const { username, password, email, profile } = req.body;
+        const { username, password, email, storename, profile } = req.body;
         const existUser = await userSchema.findOne({ username })
         if (!existUser) {
             const salt = await bcrypt.genSalt(10)
             const encryptPWD = await bcrypt.hash(password, salt)
             const user = new userSchema({
                 username,
+                storename,
                 password: encryptPWD,
                 email,
             })
